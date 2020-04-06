@@ -53,13 +53,13 @@ int main(int argc, char** argv){
    if(zavrsni >= atoi(argv[1])){
     cout<<"Zbroj ("<<pocetni<<"-"<<atoi(argv[1])-1<<")"<<"= ";suma(pocetni,zavrsni);
    }
-  else{
-   cout<<"Zbroj ("<<pocetni<<"-"<<zavrsni<<")"<<"= ";suma(pocetni,zavrsni);
+   else{
+    cout<<"Zbroj ("<<pocetni<<"-"<<zavrsni<<")"<<"= ";suma(pocetni,zavrsni);
    }
    exit(0);
   }
- wait(NULL);
- pocetni=zavrsni+1;
+  wait(NULL);
+  pocetni=zavrsni+1;
  }
  brisi(0);
  return 0;
