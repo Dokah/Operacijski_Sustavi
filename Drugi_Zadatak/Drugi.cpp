@@ -36,7 +36,7 @@ int main(int argc, char** argv){
   return 0;
  }
 
- Id=shmget( IPC_PRIVATE, sizeof(ZajednickiProstor)+atoi(argv[2]), 0600);
+ Id=shmget( IPC_PRIVATE, sizeof(ZajednickiProstor)*atoi(argv[2])*atoi(argv[1]), 0600);
  if(Id == -1)exit(1);
 
  ZajednickiProstor = (int *)shmat(Id, NULL,0);
