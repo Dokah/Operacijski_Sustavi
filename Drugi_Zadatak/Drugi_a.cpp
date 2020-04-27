@@ -28,6 +28,7 @@ void suma(int pocetni, int zavrsni){
 }
 
 int main(int argc, char** argv){
+ cout<<"Proces id: "<<getpid()<<endl;
  srand(time(NULL));
  double bp=((double)atoi(argv[1])/(double)atoi(argv[2]));
  int Broj_Procesa=ceil(bp);
@@ -50,6 +51,7 @@ int main(int argc, char** argv){
  for(int i=0;i<Broj_Procesa;i++){
   int zavrsni=pocetni+atoi(argv[2])-1;
   if (fork() == 0){
+   cout<<"Id procesa: "<<getpid()<<endl;
    if(zavrsni >= atoi(argv[1])){
     cout<<"Zbroj ("<<pocetni<<"-"<<atoi(argv[1])-1<<")"<<"= ";suma(pocetni,zavrsni);
    }
@@ -58,8 +60,8 @@ int main(int argc, char** argv){
    }
    exit(0);
   }
-  wait(NULL);
   pocetni=zavrsni+1;
+  wait(NULL);
  }
  brisi(0);
  return 0;
