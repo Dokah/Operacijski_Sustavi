@@ -53,11 +53,11 @@ void generiraj(int n,int m){
  int brojac=0;
  srand(time(NULL));
  while(brojac<n){
-  ZajednickiProstor[0]=rand()%1000;
+  ZajednickiProstor[0]=rand()%1000000000;
   cout<<"Generiram broj..."<<ZajednickiProstor[0]<<endl;
-  sem_post(Sem1);//postavi semafor 1
+  sem_post(Sem1);
   brojac++;
-  sem_wait(Sem2);//Ispitaj semafor 2
+  sem_wait(Sem2);
  }
  ZajednickiProstor[2]=brojac;
  ZajednickiProstor[1]=4;
@@ -66,14 +66,14 @@ void generiraj(int n,int m){
 
 void racunaj(int index,int n){
  int broj=0;
- int zbroj=0;
+ unsigned int zbroj=0;
  while(ZajednickiProstor[1]!=4){
-  sem_wait(Sem1);//Ispitaj semafor 1
+  sem_wait(Sem1);
   if(ZajednickiProstor[2]==n)exit(0);
   cout<<"Proces "<<index<<" Zapoceo s radom."<<endl;
   broj=ZajednickiProstor[0];
   cout<<"Proces "<<index<<" Preuzeo zadatak "<<broj<<endl;
-  sem_post(Sem2);//Postavi semafor 2
+  sem_post(Sem2);
   for (int j=0;j<broj;j++)zbroj=zbroj+j;
   cout<<"Proces "<<index<<" Zadatak: "<<broj<<" Zbroj je: "<<zbroj<<endl;
   zbroj=0;
@@ -125,16 +125,5 @@ int main(int argc, char** argv){
 for(int i=0;i<=m;i++) wait(NULL);
 
  brisi();
- /*sem_destroy(Sem1);
- sem_destroy(Sem2);
-
- shmdt(ZajednickiProstor);
- shmctl(Id, IPC_RMID, NULL);
- shmdt(Semafor1);
- shmctl(Id2, IPC_RMID, NULL);
- shmdt(Semafor2);
- shmctl(Id3, IPC_RMID, NULL);
-
- cout<<"Obrisao sve."<<endl;*/
  return 0;
 }
