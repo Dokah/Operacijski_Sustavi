@@ -13,7 +13,7 @@ sem_t* Sem1;
 sem_t* Sem2;
 
 int Id,Id2,Id3;
-int *ZajednickiProstor=new int [2];
+int *ZajednickiProstor=new int [3];
 sem_t* Semafor1;
 sem_t* Semafor2;
 
@@ -49,24 +49,27 @@ void brisi(){
  exit(0);
 }
 
-void generiraj(int n){
+void generiraj(int n,int m){
  int brojac=0;
  srand(time(NULL));
  while(brojac<n){
-  brojac++;
   ZajednickiProstor[0]=rand()%1000;
   cout<<"Generiram broj..."<<ZajednickiProstor[0]<<endl;
   sem_post(Sem1);//postavi semafor 1
+  brojac++;
   sem_wait(Sem2);//Ispitaj semafor 2
  }
+ ZajednickiProstor[2]=brojac;
  ZajednickiProstor[1]=4;
+ for(int i=1;i<m;i++)sem_post(Sem1);
 }
 
-void racunaj(int index){
+void racunaj(int index,int n){
  int broj=0;
  int zbroj=0;
  while(ZajednickiProstor[1]!=4){
   sem_wait(Sem1);//Ispitaj semafor 1
+  if(ZajednickiProstor[2]==n)exit(0);
   cout<<"Proces "<<index<<" Zapoceo s radom."<<endl;
   broj=ZajednickiProstor[0];
   cout<<"Proces "<<index<<" Preuzeo zadatak "<<broj<<endl;
@@ -105,21 +108,21 @@ int main(int argc, char** argv){
  sem_init(Sem2,1,0);
 
  ZajednickiProstor[1]=0;
+ ZajednickiProstor[2]=0;
 
  if(fork()==0){
-  generiraj(n+1);
+  generiraj(n+1,m);
   exit(0);
  }
 
  for(int i=0;i<m;i++){
   if(fork()==0){
-   racunaj(i+1);
+   racunaj(i+1,n+1);
    exit(0);
   }
  }
- for(int i=0;i<=m;i++){
-  wait(NULL);
- }
+
+for(int i=0;i<=m;i++) wait(NULL);
 
  brisi();
  /*sem_destroy(Sem1);
