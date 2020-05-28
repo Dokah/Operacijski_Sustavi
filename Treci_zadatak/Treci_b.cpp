@@ -33,7 +33,7 @@ void SemGet(int n) {
 }
 
 int SemSetVal(int SemNum, int SemVal) {
-   return semctl(SemId, SemNum, SETVAL, &SemVal);
+   return semctl(SemId, SemNum, SETVAL, SemVal);
 }
 
 int SemOp(int SemNum, int SemOp) {
@@ -73,16 +73,17 @@ void brisi(int sig){
 
 void proizvodac(int n,int m){
  int i=0;
- srand(time(NULL));
+ srand(time(0));
  for(i=0;i<n;i++){
-  SemOp(ZajednickiProstor->PUN,-1);//ispitaj semafor PUN
-  SemOp(ZajednickiProstor->PISI,-1);//ispitaj semafor PISI
+  SemOp(ZajednickiProstor->PUN,-1);
+  SemOp(ZajednickiProstor->PISI,-1);
   ZajednickiProstor->M[ZajednickiProstor->ULAZ] = rand()%1000;
-  cout<<"Proizvodac "<<m<<" salje broj: "<<ZajednickiProstor->M[ZajednickiProstor->ULAZ]<<endl;
+  cout<<"Proizvodac "<<m+1<<" salje broj: "<<ZajednickiProstor->M[ZajednickiProstor->ULAZ]<<endl;
   ZajednickiProstor->ULAZ = (ZajednickiProstor->ULAZ + 1) % 5;
-  SemOp(ZajednickiProstor->PISI,1);//postavi semafor PISI
-  SemOp(ZajednickiProstor->PRAZAN,1);//postavi semafor PRAZAN
+  SemOp(ZajednickiProstor->PISI,1);
+  SemOp(ZajednickiProstor->PRAZAN,1);
  }
+ cout<<"Proizvodac "<<m+1<<" Zavrsio sa slanjem"<<endl;
 }
 
 
@@ -90,11 +91,11 @@ void potrosac(){
  int i=0;
  int zbroj=0;
  do{
-  SemOp(ZajednickiProstor->PRAZAN,-1);//Ispitaj semafor prazan
+  SemOp(ZajednickiProstor->PRAZAN,-1);
   cout<<"Potrosac prima  "<<ZajednickiProstor->M[ZajednickiProstor->IZLAZ]<<endl;
   zbroj=zbroj+ZajednickiProstor->M[ZajednickiProstor->IZLAZ];
   ZajednickiProstor->IZLAZ=(ZajednickiProstor->IZLAZ+1) % 5;
-  SemOp(ZajednickiProstor->PUN,1);//postavi semafor PUN
+  SemOp(ZajednickiProstor->PUN,1);
   i=i+1;
  }while(i<ZajednickiProstor->UKUPNO);
  cout<<"Zbroj: "<<zbroj<<endl;
@@ -127,7 +128,7 @@ SemSetVal(ZajednickiProstor->PRAZAN,0);
 
 for(int i=0;i<m;i++){
  if(fork()==0){
-  proizvodac(n,m);
+  proizvodac(n,i);
   exit(0);
  }
 }
