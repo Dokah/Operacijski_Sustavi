@@ -76,9 +76,7 @@ void proizvodac(int n,int m){
  srand(time(NULL));
  for(i=0;i<n;i++){
   SemOp(ZajednickiProstor->PUN,-1);//ispitaj semafor PUN
-  cout<<"Proso"<<endl;
   SemOp(ZajednickiProstor->PISI,-1);//ispitaj semafor PISI
-  cout<<"Poslije semafori"<<endl;
   ZajednickiProstor->M[ZajednickiProstor->ULAZ] = rand()%1000;
   cout<<"Proizvodac "<<m<<" salje broj: "<<ZajednickiProstor->M[ZajednickiProstor->ULAZ]<<endl;
   ZajednickiProstor->ULAZ = (ZajednickiProstor->ULAZ + 1) % 5;
@@ -88,7 +86,7 @@ void proizvodac(int n,int m){
 }
 
 
-void potrosac(int n){
+void potrosac(){
  int i=0;
  int zbroj=0;
  do{
@@ -135,7 +133,7 @@ for(int i=0;i<m;i++){
 }
 
 if(fork()==0){
- potrosac(n);
+ potrosac();
  exit(0);
 }
 
