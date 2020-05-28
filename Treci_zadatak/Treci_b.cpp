@@ -7,7 +7,6 @@
 #include<sys/wait.h>
 #include<sys/shm.h>
 #include<sys/sem.h>
-#include<ctime>
 using namespace std;
 
 int Id,SemId;
@@ -73,7 +72,7 @@ void brisi(int sig){
 
 void proizvodac(int n,int m){
  int i=0;
- srand(time(0));
+ srand(time(NULL)+getpid());
  for(i=0;i<n;i++){
   SemOp(ZajednickiProstor->PUN,-1);
   SemOp(ZajednickiProstor->PISI,-1);
