@@ -13,13 +13,13 @@ using namespace std;
 int Id,SemId;
 
 struct Zajednicko{
- int ULAZ=0;
- int IZLAZ=0;
+ int ULAZ;
+ int IZLAZ;
  int UKUPNO;
  int M[5];
- int PISI=2;
- int PUN=1;
- int PRAZAN=0;
+ int PISI;
+ int PUN;
+ int PRAZAN;
 };
 
 Zajednicko *ZajednickiProstor=new Zajednicko;
@@ -75,10 +75,10 @@ void proizvodac(int n,int m){
  int i=0;
  srand(time(NULL));
  for(i=0;i<n;i++){
-  cout<<"Pun: "<<ZajednickiProstor->PUN<<endl;
-  cout<<"Pisi: "<<ZajednickiProstor->PISI<<endl;
   SemOp(ZajednickiProstor->PUN,-1);//ispitaj semafor PUN
+  cout<<"Proso"<<endl;
   SemOp(ZajednickiProstor->PISI,-1);//ispitaj semafor PISI
+  cout<<"Poslije semafori"<<endl;
   ZajednickiProstor->M[ZajednickiProstor->ULAZ] = rand()%1000;
   cout<<"Proizvodac "<<m<<" salje broj: "<<ZajednickiProstor->M[ZajednickiProstor->ULAZ]<<endl;
   ZajednickiProstor->ULAZ = (ZajednickiProstor->ULAZ + 1) % 5;
@@ -93,11 +93,12 @@ void potrosac(int n){
  int zbroj=0;
  do{
   SemOp(ZajednickiProstor->PRAZAN,-1);//Ispitaj semafor prazan
-  zbroj=zbroj+ZajednickiProstor->IZLAZ;
-  ZajednickiProstor->M[ZajednickiProstor->IZLAZ]=(ZajednickiProstor->IZLAZ+1) % 5;
+  cout<<"Potrosac prima  "<<ZajednickiProstor->M[ZajednickiProstor->IZLAZ]<<endl;
+  zbroj=zbroj+ZajednickiProstor->M[ZajednickiProstor->IZLAZ];
+  ZajednickiProstor->IZLAZ=(ZajednickiProstor->IZLAZ+1) % 5;
   SemOp(ZajednickiProstor->PUN,1);//postavi semafor PUN
   i=i+1;
- }while(i<n);
+ }while(i<ZajednickiProstor->UKUPNO);
  cout<<"Zbroj: "<<zbroj<<endl;
 }
 
@@ -113,6 +114,13 @@ Id=shmget(IPC_PRIVATE,sizeof(ZajednickiProstor),0600);
 if(Id == -1)exit(1);
 
 ZajednickiProstor = (Zajednicko *) shmat(Id,NULL,0);
+
+ZajednickiProstor->PUN=1;
+ZajednickiProstor->PISI=2;
+ZajednickiProstor->PRAZAN=0;
+ZajednickiProstor->IZLAZ=0;
+ZajednickiProstor->ULAZ=0;
+ZajednickiProstor->UKUPNO=m*n;
 
 SemGet(3);
 SemSetVal(ZajednickiProstor->PUN,5);
