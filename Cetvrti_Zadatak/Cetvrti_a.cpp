@@ -17,7 +17,6 @@ pthread_t *thr_id=new pthread_t [N];
 
 void brisi(){
  cout<<"Brisem"<<endl;
- for(int i=0;i<N;i++)pthread_join(thr_id[i],NULL);
  pthread_mutex_destroy(&m);
  pthread_cond_destroy(&red);
 }
@@ -41,10 +40,10 @@ void *barijera(void *arg){
  }
  else{
   br=0;
-  pthread_cond_signal(&red);
+  pthread_cond_broadcast(&red);
  }
- cout<<"Dretva "<<index<<". "<<"uneseni broj je: "<<broj<<endl;
  pthread_mutex_unlock(&m);
+ cout<<"Dretva "<<index<<". "<<"uneseni broj je: "<<broj<<endl;
  pthread_exit(NULL);
 }
 
@@ -62,6 +61,7 @@ int main(int argc,char** argv){
   }
  }
 
+ for(int i=0;i<N;i++)pthread_join(thr_id[i],NULL);
  brisi();
 
  return 0;
