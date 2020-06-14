@@ -11,9 +11,7 @@ pthread_mutex_t m;
 pthread_cond_t red;
 
 int N,br;
-int *ZajednickiProstor=new int [N];
-
-pthread_t *thr_id=new pthread_t [N];
+pthread_t thr_id[15];
 
 void brisi(){
  cout<<"Brisem"<<endl;
@@ -29,9 +27,9 @@ void brisi(int sig){
 }
 
 void *barijera(void *arg){
- pthread_mutex_lock(&m);
  int broj;
  int index=*((int *)arg);
+ pthread_mutex_lock(&m);
  cout<<"Dretva "<<index<<". "<<"unesite broj: "<<endl;
  cin>>broj;
  br++;
@@ -42,8 +40,8 @@ void *barijera(void *arg){
   br=0;
   pthread_cond_broadcast(&red);
  }
- pthread_mutex_unlock(&m);
  cout<<"Dretva "<<index<<". "<<"uneseni broj je: "<<broj<<endl;
+ pthread_mutex_unlock(&m);
  pthread_exit(NULL);
 }
 
