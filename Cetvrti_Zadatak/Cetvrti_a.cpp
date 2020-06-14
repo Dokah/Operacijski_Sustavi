@@ -41,6 +41,7 @@ void *barijera(void *arg){
   pthread_cond_broadcast(&red);
  }
  cout<<"Dretva "<<index<<". "<<"uneseni broj je: "<<broj<<endl;
+ usleep(500000);
  pthread_mutex_unlock(&m);
  pthread_exit(NULL);
 }
