@@ -47,29 +47,32 @@ void brisi(){
 }
 
 void udji(int vrstai){
+ char slovo;
  pthread_mutex_lock(&ZajednickiProstor->m);
  ZajednickiProstor->ceka[vrstai]++;
- //cout<<"U red cekanja"<<endl;//ispisi red cekanja i red u restoranu ((u red cekanja))
+ if(vrstai==0) slovo='L'; else slovo='M';
  while(ZajednickiProstor->br[1-vrstai]>0 || ((ZajednickiProstor->siti>=ZajednickiProstor->N)&&(ZajednickiProstor->ceka[1-vrstai]>0))){
-  cout<<"U red cekanja"<<endl;
+  cout<<"Red Linux: "<<ZajednickiProstor->ceka[0]<<" Red Microsoft: "<<ZajednickiProstor->ceka[1]<<" Restoran: "<<ZajednickiProstor->br[0]<<"(L) "<<ZajednickiProstor->br[1]<<"(M) "<<slovo<<" u red cekanja"<<endl;
   pthread_cond_wait(&ZajednickiProstor->uv[vrstai], &ZajednickiProstor->m);
  }
  ZajednickiProstor->br[vrstai]++;
  ZajednickiProstor->ceka[vrstai]--;
  if(ZajednickiProstor->ceka[1-vrstai]>0) ZajednickiProstor->siti++;
- cout<<"Siti: "<<ZajednickiProstor->siti<<endl;
- cout<<"U restoran"<<endl;//ispisi red cekanja i red u restoranu ((u restoran))
+ //cout<<"Siti: "<<ZajednickiProstor->siti<<endl;
+ cout<<"Red Linux: "<<ZajednickiProstor->ceka[0]<<" Red Microsoft: "<<ZajednickiProstor->ceka[1]<<" Restoran: "<<ZajednickiProstor->br[0]<<"(L) "<<ZajednickiProstor->br[1]<<"(M) "<<slovo<<" u red restoran"<<endl;
  pthread_mutex_unlock(&ZajednickiProstor->m);
 }
 
 void izadji(int vrstao){
+ char slovo;
  pthread_mutex_lock(&ZajednickiProstor->m);
+ if(vrstao==0) slovo='L'; else slovo='M';
  ZajednickiProstor->br[vrstao]--;
  if(ZajednickiProstor->br[vrstao] == 0){
   ZajednickiProstor->siti=0;
   pthread_cond_broadcast(&ZajednickiProstor->uv[1-vrstao]);
  }
- cout<<"Iz restorana"<<endl;//ipisi red cekana i red iz restorana ((iz restorana))
+ cout<<"Red Linux: "<<ZajednickiProstor->ceka[0]<<" Red Microsoft: "<<ZajednickiProstor->ceka[1]<<" Restoran: "<<ZajednickiProstor->br[0]<<"(L) "<<ZajednickiProstor->br[1]<<"(M) "<<slovo<<" iz restorana"<<endl;
  pthread_mutex_unlock(&ZajednickiProstor->m);
 }
 
