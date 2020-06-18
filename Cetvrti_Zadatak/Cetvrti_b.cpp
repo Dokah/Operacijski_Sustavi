@@ -52,14 +52,14 @@ void udji(int vrstai){
  ZajednickiProstor->ceka[vrstai]++;
  if(vrstai==0) slovo='L'; else slovo='M';
  while(ZajednickiProstor->br[1-vrstai]>0 || ((ZajednickiProstor->siti>=ZajednickiProstor->N)&&(ZajednickiProstor->ceka[1-vrstai]>0))){
-  cout<<"Red Linux: "<<ZajednickiProstor->ceka[0]<<" Red Microsoft: "<<ZajednickiProstor->ceka[1]<<" Restoran: "<<ZajednickiProstor->br[0]<<"(L) "<<ZajednickiProstor->br[1]<<"(M) "<<slovo<<" u red cekanja"<<endl;
+  cout<<"Red Linux: "<<ZajednickiProstor->ceka[0]<<" Red Microsoft: "<<ZajednickiProstor->ceka[1]<<" Restoran: "<<ZajednickiProstor->br[0]<<"(L) "<<ZajednickiProstor->br[1]<<"(M) "<<"----->"<<slovo<<" u red cekanja"<<endl;
   pthread_cond_wait(&ZajednickiProstor->uv[vrstai], &ZajednickiProstor->m);
  }
  ZajednickiProstor->br[vrstai]++;
  ZajednickiProstor->ceka[vrstai]--;
  if(ZajednickiProstor->ceka[1-vrstai]>0) ZajednickiProstor->siti++;
  //cout<<"Siti: "<<ZajednickiProstor->siti<<endl;
- cout<<"Red Linux: "<<ZajednickiProstor->ceka[0]<<" Red Microsoft: "<<ZajednickiProstor->ceka[1]<<" Restoran: "<<ZajednickiProstor->br[0]<<"(L) "<<ZajednickiProstor->br[1]<<"(M) "<<slovo<<" u red restoran"<<endl;
+ cout<<"Red Linux: "<<ZajednickiProstor->ceka[0]<<" Red Microsoft: "<<ZajednickiProstor->ceka[1]<<" Restoran: "<<ZajednickiProstor->br[0]<<"(L) "<<ZajednickiProstor->br[1]<<"(M) "<<"----->"<<slovo<<" u restoran"<<endl;
  pthread_mutex_unlock(&ZajednickiProstor->m);
 }
 
@@ -72,7 +72,7 @@ void izadji(int vrstao){
   ZajednickiProstor->siti=0;
   pthread_cond_broadcast(&ZajednickiProstor->uv[1-vrstao]);
  }
- cout<<"Red Linux: "<<ZajednickiProstor->ceka[0]<<" Red Microsoft: "<<ZajednickiProstor->ceka[1]<<" Restoran: "<<ZajednickiProstor->br[0]<<"(L) "<<ZajednickiProstor->br[1]<<"(M) "<<slovo<<" iz restorana"<<endl;
+ cout<<"Red Linux: "<<ZajednickiProstor->ceka[0]<<" Red Microsoft: "<<ZajednickiProstor->ceka[1]<<" Restoran: "<<ZajednickiProstor->br[0]<<"(L) "<<ZajednickiProstor->br[1]<<"(M) "<<"----->"<<slovo<<" iz restorana"<<endl;
  pthread_mutex_unlock(&ZajednickiProstor->m);
 }
 
